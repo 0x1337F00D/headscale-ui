@@ -32,6 +32,9 @@ services:
     image: ghcr.io/gurucomputing/headscale-ui:latest
     restart: unless-stopped
     container_name: headscale-ui
+    environment:
+      - HEADSCALE_URL=https://hs.yourdomain.com.au
+      - HEADSCALE_API_KEY=abc123...
     # ports:
     # - 8443:8443
     # - 8080:8080

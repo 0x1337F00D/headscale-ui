@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store';
 import { Device, User, ACL } from '$lib/common/classes';
 
-// 
+//
 // localStorage Stores (global scope, saves to the browser)
-// 
+//
 
 // stores the theme
 export const themeStore = writable('');
@@ -22,9 +22,9 @@ export const preAuthHideStore = writable(false);
 // Shows or Hides ACL Settings
 export const showACLPagesStore = writable(false);
 
-// 
+//
 // Normal Stores (global scope, saves until refresh)
-// 
+//
 // stores user and device data
 export const userStore = writable([new User()]);
 export const userFilterStore = writable([new User()]);

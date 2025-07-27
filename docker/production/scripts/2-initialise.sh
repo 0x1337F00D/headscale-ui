@@ -17,6 +17,12 @@ window.headscaleConfig = {
   url: "${HEADSCALE_URL}",
   apiKey: "${HEADSCALE_API_KEY}"
 };
+if (window.headscaleConfig.url) {
+  localStorage.setItem('headscaleURL', window.headscaleConfig.url);
+}
+if (window.headscaleConfig.apiKey) {
+  localStorage.setItem('headscaleAPIKey', window.headscaleConfig.apiKey);
+}
 EOF
 
 echo "Starting Caddy"
