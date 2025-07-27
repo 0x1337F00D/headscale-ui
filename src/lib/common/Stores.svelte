@@ -22,12 +22,16 @@
 		sortDirectionStore.set(localStorage.getItem('headscaleUserSortDirection') || 'ascending');
 		sortDirectionStore.subscribe((val) => localStorage.setItem('headscaleUserSortDirection', val));
 
-		// stores URL and API key
-		URLStore.set(localStorage.getItem('headscaleURL') || '');
-		// remove trailing slashes when storing the URL
-		URLStore.subscribe((val) => localStorage.setItem('headscaleURL', val.replace(/\/+$/, '')));
-		APIKeyStore.set(localStorage.getItem('headscaleAPIKey') || '');
-		APIKeyStore.subscribe((val) => localStorage.setItem('headscaleAPIKey', val));
+                // stores URL and API key
+                const envConfig = window.headscaleConfig || {};
+                const envURL = envConfig.url || '';
+                const envKey = envConfig.apiKey || '';
+
+                URLStore.set(localStorage.getItem('headscaleURL') || envURL);
+                // remove trailing slashes when storing the URL
+                URLStore.subscribe((val) => localStorage.setItem('headscaleURL', val.replace(/\/+$/, '')));
+                APIKeyStore.set(localStorage.getItem('headscaleAPIKey') || envKey);
+                APIKeyStore.subscribe((val) => localStorage.setItem('headscaleAPIKey', val));
 
 		// stores whether preauthkeys get hidden when expired/used
 		preAuthHideStore.set((localStorage.getItem('headscalePreAuthHide') || 'false') == 'true');
