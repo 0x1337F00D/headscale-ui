@@ -9,11 +9,11 @@ const config = {
 			precompress: false
 		}),
 		paths: {
-			base: "/web"
+			base: '/web'
 		},
 		csp: {
-			mode: "hash",
-			directives: { "script-src": ["self"] },
+			mode: 'hash',
+			directives: { 'script-src': ['self'] }
 		}
 	},
 	preprocess: [
