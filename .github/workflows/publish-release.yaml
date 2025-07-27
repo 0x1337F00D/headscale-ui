@@ -18,18 +18,20 @@ jobs:
           NOT_PREVIOUSLY_PUBLISHED=0
           # get a current BUILD_DATE
           VERSION=$(jq -r '.version' ./package.json)
+          REPO=$(echo '${{ github.repository }}' | tr 'A-Z' 'a-z')
           echo "BUILD_DATE=$(date +%Y%m%d-%H%M%S)" >> $GITHUB_ENV
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "REPO=$REPO" >> $GITHUB_ENV
 
           # setting tags
           if echo "$VERSION" | grep -q "beta"; then
-            echo "TAGS=ghcr.io/${{ github.repository }}:beta, ghcr.io/${{ github.repository }}:$VERSION, ghcr.io/${{ github.repository }}:latest" >> $GITHUB_ENV
+            echo "TAGS=ghcr.io/$REPO:beta, ghcr.io/$REPO:$VERSION, ghcr.io/$REPO:latest" >> $GITHUB_ENV
           else
-            echo "TAGS=ghcr.io/${{ github.repository }}:release, ghcr.io/${{ github.repository }}:latest, ghcr.io/${{ github.repository }}:$VERSION" >> $GITHUB_ENV
+            echo "TAGS=ghcr.io/$REPO:release, ghcr.io/$REPO:latest, ghcr.io/$REPO:$VERSION" >> $GITHUB_ENV
           fi
           echo "PRIMARY_TAG=latest" >> $GITHUB_ENV
           # check if version has already been published
-          $(docker manifest inspect ghcr.io/${{ github.repository }}:$VERSION > /dev/null) || NOT_PREVIOUSLY_PUBLISHED=1
+          $(docker manifest inspect ghcr.io/$REPO:$VERSION > /dev/null) || NOT_PREVIOUSLY_PUBLISHED=1
           echo "NOT_PREVIOUSLY_PUBLISHED=$NOT_PREVIOUSLY_PUBLISHED" >> $GITHUB_ENV
 
       - name: Set up QEMU
@@ -64,9 +66,9 @@ jobs:
         if: ${{ env.NOT_PREVIOUSLY_PUBLISHED != 0 }}
         id: extract
         with:
-          image: ghcr.io/${{ github.repository }}:${{ env.PRIMARY_TAG }}
+          image: ghcr.io/${{ env.REPO }}:${{ env.PRIMARY_TAG }}
           path: web
-          
+
       - name: create release asset
         if: ${{ env.NOT_PREVIOUSLY_PUBLISHED != 0 }}
         run: |
